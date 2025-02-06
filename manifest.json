@@ -1,0 +1,31 @@
+{
+  "platform-version": "3.0",
+  "modules": {
+    "chat_conversation": {
+      "location": {
+        "conversation_user_info": {
+          "url": "index.html",
+          "icon": "icon.svg"
+        }
+      }
+    },
+    "support_ticket": {
+      "location": {
+        "ticket_sidebar": {
+          "url": "index.html",
+          "icon": "icon.svg"
+        }
+      }
+    },
+    "common": {
+      "requests": {}
+    }
+  },
+  "engines": {
+    "node": "18.19.0",
+    "fdk": "9.1.0"
+  },
+  "app": {
+    "tracking_id": "c1gnuifn4nfqrpqts135"
+  }
+}

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.freshdev.io/assets/app-client@2.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@freshworks/crayons@v4/css/crayons-min.css"
+    />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@freshworks/crayons@v4/dist/crayons/crayons.esm.js"
+    ></script>
+    <script
+    nomodule
+    src="https://cdn.jsdelivr.net/npm/@freshworks/crayons@v4/dist/crayons/crayons.js"
+    ></script>
+    <link rel="stylesheet" href="./assets/styles/iparams.css" />
+  </head>
+
+  <body>
+    <main class="main-container">
+      <div class="installation-view">
+        <div class="config-container">
+          <div class="installation-container column">
+            <div class="fw-type-sm fw-type-semibold fw-m-0 about">About</div>
+            <p
+              class="fw-type-base fw-type-sm fw-m-0 fw-pt-8 fw-color-smoke-700"
+              id="description"
+            >
+              The power of Appstle Subscriptions inside Freshchat. Access &
+              Manage Customers' Subscriptions Data from the comfort of the
+              Freshchat Inbox. Provide Agents with Context & Control to support
+              Customers.
+              <a
+                href="https://crmsupport.freshworks.com/en/support/solutions/articles/50000009621"
+                target="_blank"
+                class="support-link fw-type-anchor"
+              >
+                Learn more
+              </a>
+            </p>
+            <div class="setup">
+              <h5 class="connect-info2">
+                <span id="link-state">Connect your appstle account</span>
+                <hr id="link-state-line" />
+              </h5>
+              <div class="details-container">
+                <div id="connect-account" class="hide">
+                  <div id="initial-container" class="">
+                    <div class="head-container">
+                      <img src="./assets/images/logo.svg" class="fw-my-16" />
+                    </div>
+                    <div class="input-container">
+                      <fw-input
+                        id="api-key"
+                        label="Appstle API Key"
+                        required
+                        type="password"
+                        placeholder="Value"
+                        class="secure-field"
+                        data-bind="api_key"
+                      />
+                      <div slot="hint-text" class="please-find-text">
+                        Please find your API key in Appstle Subscriptions >
+                        Settings > General Settings > Shop Settings > API Key
+                      </div>
+                    </div>
+
+                    <div class="input-container">
+                      <fw-input
+                        id="freshchat-domain"
+                        label="Freshchat Domain"
+                        required
+                        placeholder="Value"
+                        value=""
+                      />
+                      <div slot="hint-text" class="please-find-text">
+                        Please find your domain in Admin Settings ->
+                        Conversation Mobile App
+                      </div>
+                    </div>
+                    <div class="input-container">
+                      <fw-input
+                        id="freshchat-key"
+                        label="Freshchat API Key"
+                        required
+                        type="password"
+                        class="freshchat-secure-field"
+                        placeholder="Value"
+                        data-bind="freshchat_key"
+                      />
+                      <div slot="hint-text" class="please-find-text">
+                        Please find your API key in Admin Settings -> API
+                        settings -> Account API key
+                      </div>
+                    </div>
+
+                    <fw-button color="primary" id="link-account">
+                      <fw-icon
+                        slot="before-label"
+                        size="16"
+                        name="arrow-right"
+                      ></fw-icon>
+                      Authenticate account
+                    </fw-button>
+                  </div>
+                  <div id="loading-container" class="hide">
+                    <div class="loader">
+                      <fw-spinner size="medium"></fw-spinner>
+                      <div class="fw-mt-8">Authenticating...</div>
+                    </div>
+                  </div>
+                  <div id="toast-container"></div>
+                  <div id="error-container" class="hide">
+                    <div
+                      class="reload-container fw-flex fw-items-center fw-flex-column fw-justify-center"
+                    >
+                      <span id="error-message">Invalid domain and keys</span>
+                      <fw-button id="retry-button" color="link" class="fw-mt-8">
+                        <fw-icon
+                          slot="before-label"
+                          size="16"
+                          name="refresh"
+                        ></fw-icon>
+                        <span>Return</span>
+                      </fw-button>
+                    </div>
+                  </div>
+                </div>
+                <div id="linked-account" class="hide">
+                  <div class="fw-flex fw-flex-row" id="linked_details">
+                    <div
+                      class="icon-container fw-flex fw-items-center fw-justify-center"
+                    >
+                      <img
+                        id="icon_img"
+                        src="https://cdn.shopify.com/app-store/listing_images/80b36c79c341ba709db28b0a5294fda0/icon/CP7b-sDuuPgCEAE=.jpeg"
+                        width="40px"
+                      />
+                    </div>
+                    <div class="fw-pl-8 unlink-div">
+                      <p class="fw-type-h3 fw-type-bold unlink-head1 fw-pb-4">
+                        Appstle Subscriptions
+                      </p>
+                      <p class="fw-m-0 fw-type-semibold fw-type-sm fw-pb-6">
+                        <a
+                          href=""
+                          target="_blank"
+                          id="appstle_link"
+                          class="fw-type-regular fw-type-xs fw-type-anchor"
+                          >Go To Appstle Subscriptions
+                        </a>
+                      </p>
+                      <img
+                        id="newTabIcon"
+                        src="./assets/images/newTab.svg"
+                        width="12px"
+                      />
+                      <p class="fw-m-0 fw-type-regular fw-type-xs connect-date">
+                        Connected on <span id="installed-date"></span>
+                      </p>
+                    </div>
+                    <div
+                      class="fw-flex-grow fw-flex fw-justify-end"
+                      id="unlink-button"
+                    >
+                      <fw-button id="unlink-account" color="secondary">
+                        <fw-icon name="link-broken" size="14"></fw-icon>
+                        <span class="fw-pl-4">Unlink account</span>
+                      </fw-button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script src="./assets/scripts/iparams.js"></script>
+  </body>
+</html>

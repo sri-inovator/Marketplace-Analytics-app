@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64" height="64" id="Layer_5" data-name="Layer 5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #459ee6;
+      }
+
+      .cls-1, .cls-2 {
+        fill-rule: evenodd;
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        stroke-width: 0px;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        fill: #314863;
+      }
+    </style>
+  </defs>
+  <rect class="cls-3" x="1" y="1" width="14" height="14" rx="2" ry="2"/>
+  <g>
+    <path class="cls-1" d="M10.42,9.45h2.62c.53,0,.96.43.96.96v2.62c0,.53-.43.96-.96.96h-2.62c-.53,0-.96-.43-.96-.96v-2.62c0-.53.43-.96.96-.96Z"/>
+    <path class="cls-1" d="M2.96,9.45h2.62c.53,0,.96.43.96.96v2.62c0,.53-.43.96-.96.96h-2.62c-.53,0-.96-.43-.96-.96v-2.62c0-.53.43-.96.96-.96Z"/>
+    <path class="cls-2" d="M6.58,2h2.62c.53,0,.96.43.96.96v2.62c0,.53-.43.96-.96.96h-2.62c-.53,0-.96-.43-.96-.96v-2.62c0-.53.43-.96.96-.96Z"/>
+  </g>
+</svg>

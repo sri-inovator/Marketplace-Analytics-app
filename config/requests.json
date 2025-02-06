@@ -1,0 +1,58 @@
+{
+  "chatAuthentication": {
+    "schema": {
+      "method": "GET",
+      "host": "<%= context.freshchat_domain %>",
+      "path": "/v2/accounts/configuration",
+      "headers": {
+        "Authorization": "Bearer <%= context.freshchat_token %>",
+        "Content-Type": "application/json"
+      }
+    }
+  },
+  "getAgentDetails": {
+    "schema": {
+      "method": "GET",
+      "host": "<%= context.freshchat_domain %>",
+      "path": "/v2/agents?items_per_page=100",
+      "headers": {
+        "Authorization": "Bearer <%= context.freshchat_token %>",
+        "Content-Type": "application/json"
+      }
+    }
+  },
+  "getGroupDetails": {
+    "schema": {
+      "method": "GET",
+      "host": "<%= context.freshchat_domain %>",
+      "path": "/v2/groups?items_per_page=100",
+      "headers": {
+        "Authorization": "Bearer <%= context.freshchat_token %>",
+        "Content-Type": "application/json"
+      }
+    }
+  },"getChatConversations": {
+    "schema": {
+      "protocol": "https",
+      "method": "GET",
+      "host": "<%= iparam.freshchat_domain_input %>",
+      "path": "/v2/conversations/<%= context.conversation_id %>",
+      "headers": {
+        "Authorization": "Bearer <%= iparam.freshchat_token %>",
+        "Content-Type": "application/json"
+      }
+    }
+  },
+  "getChatAgent": {
+    "schema": {
+      "method": "GET",
+      "host": "<%= iparam.freshchat_domain_input %>",
+      "path": "/v2/agents/<%= context.agent_id %>",
+      "headers": {
+        "Authorization": "Bearer <%= iparam.freshchat_token %>",
+        "Content-Type": "application/json"
+      }
+    }
+  }
+  
+}
