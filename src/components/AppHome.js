@@ -75,29 +75,17 @@ const AppHome = ({ client, isFreshchat }) => {
       if (!contactId) return;  
       try {
         let response;
-        if(contactEmail){
-          response = await client?.request?.invokeTemplate(
-            "getTicketsDetails",
-            {
-              context: {
-                email: contactEmail,
-                product: "freshdesk"
-              },
-            }
-          );
-        }
-
-        if(mobile){
-          response = await client?.request?.invokeTemplate(
-            "getTicketsDetailsMobile",
-            {
-              context: {
-                mobile: mobile,
-                product: "freshdesk"
-              },
-            }
-          );
-        }
+        console.log("paapaa"+ contactId);
+        response = await client?.request?.invokeTemplate(
+          "getTicketsDetails",
+          {
+            context: {
+              userId: contactId,
+              product: "freshdesk"
+            },
+          }
+        );
+      
         
         const data = JSON.parse(response.response);
 
