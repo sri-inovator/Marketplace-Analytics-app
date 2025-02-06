@@ -54,14 +54,27 @@ const App = () => {
 
         client.instance.resize({height: '568px'});
         isInstalled = true;
+        if(["chat_conversation_sidebar","conversation_user_info"].includes(
+          location
+        )){
 
         setChild(
           isInstalled ? (
-            <AppHome client={client} />
+            <AppHome client={client} isFreshchat={true}/>
           ) : (
             <ChartComponent client={client} />
           )
         );
+      }
+      else{
+        setChild(
+          isInstalled ? (
+            <AppHome client={client} isFreshchat={true}/>
+          ) : (
+            <ChartComponent client={client} />
+          )
+        );
+      }
 
       } else if(["ticket_sidebar"].includes(location)) {
         client.instance.receive(({ data }) => {

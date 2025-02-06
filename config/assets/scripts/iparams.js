@@ -59,6 +59,8 @@ let cancelReasons = [
   "Other reason",
 ];
 
+appstledomainurl.value = "staging-css-aug9-a4be11dcc0ae72b17232587.freshpori.com";
+
 let cancelReasons1 = [];
 
 let flag = false;
@@ -147,6 +149,8 @@ function resetDefaults() {
     "Other reason",
   ];
 }
+
+let domain = "https://staging-css-aug9-a4be11dcc0ae72b17232587.freshpori.com";
 
 function showLoading() {
   hideElement(initialState);

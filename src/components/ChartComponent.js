@@ -4,6 +4,7 @@ import "chartkick/chart.js"; // Import Chart.js for rendering
 import styled from "@emotion/styled";
 
 const AnalyticsDashboard = ({ chartType, data }) => {
+  console.log("ss  " +data + chartType);
 
   const formattedData = data.map((entry) => [`${entry.month} ${entry.year}`, entry.count]);
 

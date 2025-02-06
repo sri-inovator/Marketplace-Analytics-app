@@ -747,11 +747,11 @@ export const ItemInfo = styled.div`
 `;
 
 export const ItemInfo1 = styled.div`
-  width: 200px;
+  width: 269px;
   height: 118px;
   position: absolute;
-  left: 102px;
-  top: 25px;
+  left: 122px;
+  top: 22px;
 `;
 
 export const ItemName = styled.span`

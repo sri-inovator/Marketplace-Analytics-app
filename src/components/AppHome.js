@@ -14,22 +14,23 @@ const ChatFreq = [
   { month: "Jun", year: "2025", count: 92 }
 ];
 
-const TicketsFreq = [
-  { month: "Feb", year: "2024", count: 45 },
-  { month: "Nov", year: "2023", count: 78 },
-];
-
 const TopicsFreq = [
   { month: "Mar", year: "2024", count: 67 },
   { month: "Oct", year: "2023", count: 81 },
 ];
 
-const AppHome = ({ client }) => {
+const AppHome = ({ client, isFreshchat }) => {
   const [chartType, setChartType] = useState("bar");
   const [selectedData, setSelectedData] = useState(ChatFreq);
   const [contactEmail, setContactEmail] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [contactId, setContactId] = useState("");
+  const [ticketsFreq, setTicketsFreq] = useState([]); // State for dynamic ticket data
+  const [url, setUrl] = useState(""); // State for dynamic ticket data
   const [emailNotFound, setEmailNotFound] = useState(false);
   const [contact, setContact] = useState();
+  const [issues, setIssues] = useState({}); // Store all issues
+  const [firstIssue, setFirstIssue] = useState({ id: "", text: "" });
   const chatRef = useRef(null);
   const ticketRef = useRef(null);
   const topicRef = useRef(null);
@@ -52,6 +53,8 @@ const AppHome = ({ client }) => {
           setContact(data);
           if (data?.contact?.email) {
             setContactEmail(data?.contact?.email);
+            setMobile(data?.contact?.mobile);
+            setContactId(data?.contact?.id);
           } else {
             setEmailNotFound(true);
           }
@@ -66,6 +69,69 @@ const AppHome = ({ client }) => {
     }
 
   }, [client]);
+
+  useEffect(() => {
+    const fetchTicketsData = async () => {
+      if (!contactId) return;  
+      try {
+        let response;
+        if(contactEmail){
+          response = await client?.request?.invokeTemplate(
+            "getTicketsDetails",
+            {
+              context: {
+                email: contactEmail,
+                product: "freshdesk"
+              },
+            }
+          );
+        }
+
+        if(mobile){
+          response = await client?.request?.invokeTemplate(
+            "getTicketsDetailsMobile",
+            {
+              context: {
+                mobile: mobile,
+                product: "freshdesk"
+              },
+            }
+          );
+        }
+        
+        const data = JSON.parse(response.response);
+
+        const formattedData = data.conv_data_graph_list.map((item) => ({
+          month: new Date(2025, item.month - 1).toLocaleString("en-US", { month: "short" }),
+          year: item.year.toString(),
+          count: item.count,
+        }));
+
+        // Extract issue data
+        const issueDataMap = data.issue_data_list.issue_data_map || {}; // Store all issues
+        const firstIssueKey = Object.keys(issueDataMap)[0]; // Get first issue ID
+        const firstIssueValue = issueDataMap[firstIssueKey]; // Get first issue description
+
+        const url = data.issue_data_list.url;
+
+        console.log(formattedData);
+        console.log(response);
+  
+        if (!response.status === 200) throw new Error("Failed to fetch ticket data");
+          
+        // Assuming API returns an array of { month, year, count }
+        console.log(formattedData);
+        setTicketsFreq(formattedData);
+        setIssues(issueDataMap); // Store all issues in state
+        setFirstIssue({ id: firstIssueKey, text: firstIssueValue });
+        setUrl(url);
+      } catch (error) {
+        console.error("Error fetching ticket details:", error);
+      }
+    };
+  
+    fetchTicketsData();
+  }, [contactId, contactEmail, mobile]);
 
   useEffect(() => {
     if (chatRef.current) chatRef.current.options = iconDataSource;
@@ -92,6 +158,8 @@ const AppHome = ({ client }) => {
   };
 
   const handleChartSelection = (type, data) => {
+    console.log("kkaaa   "+data);
+    console.log(data);
     setChartType(type);
     setSelectedData(data);
   };
@@ -104,17 +172,19 @@ const AppHome = ({ client }) => {
     <div className="p-6 flex flex-col items-center space-y-4">
       <Head>Insights dashboard</Head>
       <ButtonDiv>
-        <FwPopover ref={chatPopRef} same-width="false">
+          <FwPopover ref={chatPopRef} same-width="false">
+        {isFreshchat && (
           <FwButton slot="popover-trigger">Chat</FwButton>
-          <FwListOptions
-            onMouseLeave={() => handleMouseLeave(chatPopRef)}
-            ref={chatRef}
-            slot="popover-content"
-            option-label-path="name"
-            option-value-path="id"
-            onFwChange={(e) => handleChartSelection(e.detail.value, ChatFreq)}
-          ></FwListOptions>
-        </FwPopover>
+        )}
+        <FwListOptions
+          onMouseLeave={() => handleMouseLeave(chatPopRef)}
+          ref={chatRef}
+          slot="popover-content"
+          option-label-path="name"
+          option-value-path="id"
+          onFwChange={(e) => handleChartSelection(e.detail.value, ChatFreq)}
+        ></FwListOptions>
+      </FwPopover>
         <FwPopover ref={ticketPopRef} same-width="false">
           <FwButton slot="popover-trigger">Tickets</FwButton>
           <FwListOptions
@@ -124,7 +194,7 @@ const AppHome = ({ client }) => {
             option-label-path="name"
             option-value-path="id"
             onFwChange={(e) =>
-              handleChartSelection(e.detail.value, TicketsFreq)
+              handleChartSelection(e.detail.value, ticketsFreq)
             }
           ></FwListOptions>
         </FwPopover>
@@ -147,17 +217,17 @@ const AppHome = ({ client }) => {
       <Head1>Top Issues</Head1>
 
       <SubscriptionInfoDiv>
-        <RectangleBox>
-          <IconsAppIconsChevronRight src={itemsBoxArrow} />
-          <ItemInfo>
-            <ItemFrame>
-              <ItemName>Login Issues</ItemName>
-              <ItemPrice>
-                <OrderInfo></OrderInfo>
-              </ItemPrice>
-            </ItemFrame>
-          </ItemInfo>
-        </RectangleBox>
+      <RectangleBox onClick={() => window.open(url+"/a/tickets/"+firstIssue.id, "_blank")}>
+        <IconsAppIconsChevronRight src={itemsBoxArrow} />
+        <ItemInfo>
+          <ItemFrame>
+            <ItemName>{firstIssue.text || "No issue available"}</ItemName>
+            <ItemPrice>
+              <ItemPriceText>Ticket Id - {firstIssue.id || "N/A"}</ItemPriceText>
+            </ItemPrice>
+          </ItemFrame>
+        </ItemInfo>
+      </RectangleBox>
       </SubscriptionInfoDiv>
 
       <ViewAll onClick={() => handleViewMoreClick()}>View more info</ViewAll>
@@ -201,7 +271,7 @@ const Head1 = styled.h3`
 const ItemName = styled.span`
   color: rgb(18, 52, 77);
   text-overflow: ellipsis;
-  font-size: 14px;
+  font-size: 10px;
   font-family: "SF Pro Text", sans-serif;
   font-weight: 600;
   line-height: 20px;

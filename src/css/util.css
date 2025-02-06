@@ -16,13 +16,9 @@
 }
 
 #avatar {
-    margin-top: 13px;
-}
-
-#campaign-select {
-  width: 300px;
-  display: flex;
-  flex-direction: row;
+    position: absolute;
+    top: 18px;
+    left: 15px;
 }
   
   .contact-left {

@@ -18,12 +18,14 @@
       }
     },
     "common": {
-      "requests": {}
+      "requests": {
+        "getTicketsDetails" : {}
+      }
     }
   },
   "engines": {
-    "node": "18.19.0",
-    "fdk": "9.1.0"
+    "node": "18.20.6",
+    "fdk": "9.3.0"
   },
   "app": {
     "tracking_id": "c1gnuifn4nfqrpqts135"
