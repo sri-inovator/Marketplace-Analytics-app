@@ -57,9 +57,36 @@
 
   "getTicketsDetails": {
     "schema": {
+      "protocol": "https",
       "method": "GET",
       "host": "staging-css-aug9-a4be11dcc0ae72b17232587.freshpori.com",
       "path": "/v2/conversations/convByMonth?user_id=<%= context.userId %>&product=<%= context.product %>",
+      "headers": {
+        "Authorization": "Bearer eyJraWQiOiJjdXN0b20tb2F1dGgta2V5aWQiLCJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJmcmVzaGNoYXQiLCJhdWQiOiJmcmVzaGNoYXQiLCJpYXQiOjE3MzIwMTIwMDAsInNjb3BlIjoiYWdlbnQ6cmVhZCBhZ2VudDpjcmVhdGUgYWdlbnQ6dXBkYXRlIGFnZW50OmRlbGV0ZSBjb252ZXJzYXRpb246Y3JlYXRlIGNvbnZlcnNhdGlvbjpyZWFkIGNvbnZlcnNhdGlvbjp1cGRhdGUgbWVzc2FnZTpjcmVhdGUgbWVzc2FnZTpnZXQgYmlsbGluZzp1cGRhdGUgcmVwb3J0czpmZXRjaCByZXBvcnRzOmV4dHJhY3QgcmVwb3J0czpyZWFkIHJlcG9ydHM6ZXh0cmFjdDpyZWFkIGFjY291bnQ6cmVhZCBkYXNoYm9hcmQ6cmVhZCB1c2VyOnJlYWQgdXNlcjpjcmVhdGUgdXNlcjp1cGRhdGUgdXNlcjpkZWxldGUgb3V0Ym91bmRtZXNzYWdlOnNlbmQgb3V0Ym91bmRtZXNzYWdlOmdldCBtZXNzYWdpbmctY2hhbm5lbHM6bWVzc2FnZTpzZW5kIG1lc3NhZ2luZy1jaGFubmVsczptZXNzYWdlOmdldCBtZXNzYWdpbmctY2hhbm5lbHM6dGVtcGxhdGU6Y3JlYXRlIG1lc3NhZ2luZy1jaGFubmVsczp0ZW1wbGF0ZTpnZXQgZmlsdGVyaW5ib3g6cmVhZCBmaWx0ZXJpbmJveDpjb3VudDpyZWFkIHJvbGU6cmVhZCBpbWFnZTp1cGxvYWQiLCJ0eXAiOiJCZWFyZXIiLCJjbGllbnRJZCI6ImZjLWM4ZDZlZDE3LWE0YWYtNDg0YS1iMDI4LTlmYWVhZmY3YjM1YiIsInN1YiI6ImFkYzgyYjA0LTNlMmItNDEzMC05ZjI4LThlMzkxMTk3YzFkZiIsImp0aSI6IjlkZTRmMDM5LWIxZjMtNDJiMS1iZDRiLWJhZTY3N2MzZThjYyIsImV4cCI6MjA0NzU0NDgwMH0.P1Z5yFpU_6rxAay8GCytWbbm9Shjichj7hxk4WmoFAU",
+        "Content-Type": "application/json"
+      }
+    }
+  },
+
+  "getConvData": {
+    "schema": {
+      "protocol": "https",
+      "method": "GET",
+      "host": "staging-css-aug9-a4be11dcc0ae72b17232587.freshpori.com",
+      "path": "/v2/conversations/convByMonth?user_id=<%= context.userId %>&product=<%= context.product %>",
+      "headers": {
+        "Authorization": "Bearer eyJraWQiOiJjdXN0b20tb2F1dGgta2V5aWQiLCJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJmcmVzaGNoYXQiLCJhdWQiOiJmcmVzaGNoYXQiLCJpYXQiOjE3MzIwMTIwMDAsInNjb3BlIjoiYWdlbnQ6cmVhZCBhZ2VudDpjcmVhdGUgYWdlbnQ6dXBkYXRlIGFnZW50OmRlbGV0ZSBjb252ZXJzYXRpb246Y3JlYXRlIGNvbnZlcnNhdGlvbjpyZWFkIGNvbnZlcnNhdGlvbjp1cGRhdGUgbWVzc2FnZTpjcmVhdGUgbWVzc2FnZTpnZXQgYmlsbGluZzp1cGRhdGUgcmVwb3J0czpmZXRjaCByZXBvcnRzOmV4dHJhY3QgcmVwb3J0czpyZWFkIHJlcG9ydHM6ZXh0cmFjdDpyZWFkIGFjY291bnQ6cmVhZCBkYXNoYm9hcmQ6cmVhZCB1c2VyOnJlYWQgdXNlcjpjcmVhdGUgdXNlcjp1cGRhdGUgdXNlcjpkZWxldGUgb3V0Ym91bmRtZXNzYWdlOnNlbmQgb3V0Ym91bmRtZXNzYWdlOmdldCBtZXNzYWdpbmctY2hhbm5lbHM6bWVzc2FnZTpzZW5kIG1lc3NhZ2luZy1jaGFubmVsczptZXNzYWdlOmdldCBtZXNzYWdpbmctY2hhbm5lbHM6dGVtcGxhdGU6Y3JlYXRlIG1lc3NhZ2luZy1jaGFubmVsczp0ZW1wbGF0ZTpnZXQgZmlsdGVyaW5ib3g6cmVhZCBmaWx0ZXJpbmJveDpjb3VudDpyZWFkIHJvbGU6cmVhZCBpbWFnZTp1cGxvYWQiLCJ0eXAiOiJCZWFyZXIiLCJjbGllbnRJZCI6ImZjLWM4ZDZlZDE3LWE0YWYtNDg0YS1iMDI4LTlmYWVhZmY3YjM1YiIsInN1YiI6ImFkYzgyYjA0LTNlMmItNDEzMC05ZjI4LThlMzkxMTk3YzFkZiIsImp0aSI6IjlkZTRmMDM5LWIxZjMtNDJiMS1iZDRiLWJhZTY3N2MzZThjYyIsImV4cCI6MjA0NzU0NDgwMH0.P1Z5yFpU_6rxAay8GCytWbbm9Shjichj7hxk4WmoFAU",
+        "Content-Type": "application/json"
+      }
+    }
+  },
+
+  "getConvGroupCount": {
+    "schema": {
+      "protocol": "https",
+      "method": "GET",
+      "host": "staging-css-aug9-a4be11dcc0ae72b17232587.freshpori.com",
+      "path": "/v2/conversations/getConvvCount/<%= context.userId %>?product=<%= context.product >",
       "headers": {
         "Authorization": "Bearer eyJraWQiOiJjdXN0b20tb2F1dGgta2V5aWQiLCJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJmcmVzaGNoYXQiLCJhdWQiOiJmcmVzaGNoYXQiLCJpYXQiOjE3MzIwMTIwMDAsInNjb3BlIjoiYWdlbnQ6cmVhZCBhZ2VudDpjcmVhdGUgYWdlbnQ6dXBkYXRlIGFnZW50OmRlbGV0ZSBjb252ZXJzYXRpb246Y3JlYXRlIGNvbnZlcnNhdGlvbjpyZWFkIGNvbnZlcnNhdGlvbjp1cGRhdGUgbWVzc2FnZTpjcmVhdGUgbWVzc2FnZTpnZXQgYmlsbGluZzp1cGRhdGUgcmVwb3J0czpmZXRjaCByZXBvcnRzOmV4dHJhY3QgcmVwb3J0czpyZWFkIHJlcG9ydHM6ZXh0cmFjdDpyZWFkIGFjY291bnQ6cmVhZCBkYXNoYm9hcmQ6cmVhZCB1c2VyOnJlYWQgdXNlcjpjcmVhdGUgdXNlcjp1cGRhdGUgdXNlcjpkZWxldGUgb3V0Ym91bmRtZXNzYWdlOnNlbmQgb3V0Ym91bmRtZXNzYWdlOmdldCBtZXNzYWdpbmctY2hhbm5lbHM6bWVzc2FnZTpzZW5kIG1lc3NhZ2luZy1jaGFubmVsczptZXNzYWdlOmdldCBtZXNzYWdpbmctY2hhbm5lbHM6dGVtcGxhdGU6Y3JlYXRlIG1lc3NhZ2luZy1jaGFubmVsczp0ZW1wbGF0ZTpnZXQgZmlsdGVyaW5ib3g6cmVhZCBmaWx0ZXJpbmJveDpjb3VudDpyZWFkIHJvbGU6cmVhZCBpbWFnZTp1cGxvYWQiLCJ0eXAiOiJCZWFyZXIiLCJjbGllbnRJZCI6ImZjLWM4ZDZlZDE3LWE0YWYtNDg0YS1iMDI4LTlmYWVhZmY3YjM1YiIsInN1YiI6ImFkYzgyYjA0LTNlMmItNDEzMC05ZjI4LThlMzkxMTk3YzFkZiIsImp0aSI6IjlkZTRmMDM5LWIxZjMtNDJiMS1iZDRiLWJhZTY3N2MzZThjYyIsImV4cCI6MjA0NzU0NDgwMH0.P1Z5yFpU_6rxAay8GCytWbbm9Shjichj7hxk4WmoFAU",
         "Content-Type": "application/json"

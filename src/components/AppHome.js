@@ -5,27 +5,20 @@ import styled from "@emotion/styled";
 import itemsBoxArrow from "../assets/itemsBoxArrow.svg";
 import openModal from "../utils/showModal";
 
-const ChatFreq = [
-  { month: "Dec", year: "2024", count: 23 },
-  { month: "Jan", year: "2025", count: 92 },
-  { month: "Feb", year: "2025", count: 23 },
-  { month: "Mar", year: "2025", count: 92 },
-  { month: "Apr", year: "2025", count: 23 },
-  { month: "Jun", year: "2025", count: 92 }
-];
 
 const TopicsFreq = [
-  { month: "Mar", year: "2024", count: 67 },
-  { month: "Oct", year: "2023", count: 81 },
+  { groupName: "Billing", groupId: "2", count: 3 },
+  { groupName: "Login", groupId: "4", count: 5 },
 ];
 
 const AppHome = ({ client, isFreshchat }) => {
   const [chartType, setChartType] = useState("bar");
-  const [selectedData, setSelectedData] = useState(ChatFreq);
+  const [selectedData, setSelectedData] = useState([]);
   const [contactEmail, setContactEmail] = useState("");
   const [mobile, setMobile] = useState("");
   const [contactId, setContactId] = useState("");
   const [ticketsFreq, setTicketsFreq] = useState([]); // State for dynamic ticket data
+  const [convFreq, setConvFreq] = useState([]); // State for dynamic ticket data
   const [url, setUrl] = useState(""); // State for dynamic ticket data
   const [emailNotFound, setEmailNotFound] = useState(false);
   const [contact, setContact] = useState();
@@ -37,11 +30,17 @@ const AppHome = ({ client, isFreshchat }) => {
   const chatPopRef = useRef(null);
   const ticketPopRef = useRef(null);
   const topicPopRef = useRef(null);
+  const [chartData, setChartData] = useState([]);
+  const [typeFrom, setTypeFrom] = useState()
 
   const iconDataSource = [
     { id: "bar", name: "BarChart" },
     { id: "pie", name: "PieChart" },
     { id: "line", name: "LineChart" },
+  ];
+
+  const topicData = [
+    { id: "pie", name: "PieChart" }
   ];
 
   useLayoutEffect(() => {
@@ -97,6 +96,7 @@ const AppHome = ({ client, isFreshchat }) => {
 
         // Extract issue data
         const issueDataMap = data.issue_data_list.issue_data_map || {}; // Store all issues
+        console.log("lloooo" +JSON.stringify(issueDataMap));
         const firstIssueKey = Object.keys(issueDataMap)[0]; // Get first issue ID
         const firstIssueValue = issueDataMap[firstIssueKey]; // Get first issue description
 
@@ -117,14 +117,135 @@ const AppHome = ({ client, isFreshchat }) => {
         console.error("Error fetching ticket details:", error);
       }
     };
+    
   
     fetchTicketsData();
   }, [contactId, contactEmail, mobile]);
 
   useEffect(() => {
+    const fetchConvData = async () => {
+      if (!contactId) return;  
+      try {
+        let response;
+        console.log("paapaa"+ contactId);
+        response = await client?.request?.invokeTemplate(
+          "getConvData",
+          {
+            context: {
+              userId: contactId,
+              product: "freshchat"
+            },
+          }
+        );
+      
+        
+        const data = JSON.parse(response.response);
+
+        const formattedData = data.conv_data_graph_list.map((item) => ({
+          month: new Date(2025, item.month - 1).toLocaleString("en-US", { month: "short" }),
+          year: Math.floor(item.year).toString(),
+          count: item.count,
+        }));
+
+        // Extract issue data
+        const issueDataMap = data.issue_data_list.issue_data_map || {}; // Store all issues
+        console.log("lloooo" +JSON.stringify(issueDataMap));
+        const firstIssueKey = Object.keys(issueDataMap)[0]; // Get first issue ID
+        const firstIssueValue = issueDataMap[firstIssueKey]; // Get first issue description
+
+        const url = data.issue_data_list.url;
+
+        console.log(formattedData);
+        console.log(response);
+  
+        if (!response.status === 200) throw new Error("Failed to fetch ticket data");
+          
+        // Assuming API returns an array of { month, year, count }
+        console.log(formattedData);
+        setConvFreq(formattedData);
+        setIssues(issueDataMap); // Store all issues in state
+        setFirstIssue({ id: firstIssueKey, text: firstIssueValue });
+        setUrl(url);
+      } catch (error) {
+        console.error("Error fetching ticket details:", error);
+      }
+    };
+
+    fetchConvData();
+}, [contactId, contactEmail, mobile]);
+
+useEffect(() => {
+    
+  const fetchConvGroupCount = async () => {
+    console.log("inside fetchConvGroupCount");
+    console.log(contactId)
+    if (!contactId) return;
+
+    try {
+      let response;
+      response = await client?.request?.invokeTemplate(
+        "getConvGroupCount",
+        {
+          context: {
+            userId: contactId,
+            product: "freshchat"
+          },
+        }
+      );
+      const data = JSON.parse(response.response);
+      console.log(data);
+      const formatted = data.map((item) => ({
+        name: item.groupName,
+        count: item.count
+      }));
+      setChartData(formatted);
+      // console.log("hiii");
+      
+    } catch (error) {
+      console.error("Error fetching ticket details:", error);
+    }
+  };
+
+  fetchConvGroupCount();
+}, [contactId]);
+
+useEffect(() => {
+    
+  const fetchTicketGroupCount = async () => {
+    console.log("inside fetchTicketGroupCount");
+    console.log(contactId);
+    if (!contactEmail) return;
+
+    try {
+      let response;
+      setChartData(TopicsFreq);
+      response = await client?.request?.invokeTemplate(
+        "getConvGroupCount",
+        {
+          context: {
+            userId: contactId,
+            product: "freshdesk"
+          },
+        }
+      );
+      const data = JSON.parse(response);
+      const formatted = data.map((item) => ({
+        name: item.groupName,
+        count: item.count
+      }));
+      console.log("data: " + data);
+    } catch (error) {
+      console.error("Error fetching ticket details:", error);
+    }
+  };
+
+  fetchTicketGroupCount();
+}, [contactId]);
+
+  useEffect(() => {
     if (chatRef.current) chatRef.current.options = iconDataSource;
     if (ticketRef.current) ticketRef.current.options = iconDataSource;
-    if (topicRef.current) topicRef.current.options = iconDataSource;
+    if (topicRef.current) topicRef.current.options = topicData;
   }, []);
 
   const OrderInfo = ({ item }) => {
@@ -145,11 +266,12 @@ const AppHome = ({ client, isFreshchat }) => {
     });
   };
 
-  const handleChartSelection = (type, data) => {
+  const handleChartSelection = (type, data, typeFrom) => {
     console.log("kkaaa   "+data);
     console.log(data);
     setChartType(type);
     setSelectedData(data);
+    setTypeFrom(typeFrom);
   };
 
   const handleMouseLeave = (popoverRef) => {
@@ -170,7 +292,7 @@ const AppHome = ({ client, isFreshchat }) => {
           slot="popover-content"
           option-label-path="name"
           option-value-path="id"
-          onFwChange={(e) => handleChartSelection(e.detail.value, ChatFreq)}
+          onFwChange={(e) => handleChartSelection(e.detail.value, convFreq, "chat")}
         ></FwListOptions>
       </FwPopover>
         <FwPopover ref={ticketPopRef} same-width="false">
@@ -182,7 +304,7 @@ const AppHome = ({ client, isFreshchat }) => {
             option-label-path="name"
             option-value-path="id"
             onFwChange={(e) =>
-              handleChartSelection(e.detail.value, ticketsFreq)
+              handleChartSelection(e.detail.value, ticketsFreq, "ticket")
             }
           ></FwListOptions>
         </FwPopover>
@@ -194,28 +316,34 @@ const AppHome = ({ client, isFreshchat }) => {
             slot="popover-content"
             option-label-path="name"
             option-value-path="id"
-            onFwChange={(e) => handleChartSelection(e.detail.value, TopicsFreq)}
+            onFwChange={(e) => handleChartSelection(e.detail.value, chartData, "topic")}
           ></FwListOptions>
         </FwPopover>
       </ButtonDiv>
 
       {/* Pass selected chart type and data to the dashboard */}
-      <AnalyticsDashboard chartType={chartType} data={selectedData} />
+      <AnalyticsDashboard chartType={chartType} data={selectedData} typeFrom={typeFrom} />
 
       <Head1>Top Issues</Head1>
 
       <SubscriptionInfoDiv>
-      <RectangleBox onClick={() => window.open(url+"/a/tickets/"+firstIssue.id, "_blank")}>
-        <IconsAppIconsChevronRight src={itemsBoxArrow} />
-        <ItemInfo>
-          <ItemFrame>
-            <ItemName>{firstIssue.text || "No issue available"}</ItemName>
-            <ItemPrice>
-              <ItemPriceText>Ticket Id - {firstIssue.id || "N/A"}</ItemPriceText>
-            </ItemPrice>
-          </ItemFrame>
-        </ItemInfo>
-      </RectangleBox>
+        <RectangleBox onClick={() => {
+          const newUrl = url.includes("conversation") ? `${url}/${firstIssue.id}` : `${url}/a/tickets/${firstIssue.id}`;
+          window.open(newUrl, "_blank");
+        }}>
+          <ItemInfo>
+            <ItemFrame>
+              <ItemName>{firstIssue.text || "No issue available"}</ItemName>
+              <ItemPrice>
+                <ItemPriceText>
+                  {url.includes("conversation") ? 
+                    `Conversation Id - ${firstIssue.id || "N/A"}` : 
+                    `Ticket Id - ${firstIssue.id || "N/A"}`}
+                </ItemPriceText>
+              </ItemPrice>
+            </ItemFrame>
+          </ItemInfo>
+        </RectangleBox>
       </SubscriptionInfoDiv>
 
       <ViewAll onClick={() => handleViewMoreClick()}>View more info</ViewAll>
@@ -259,7 +387,7 @@ const Head1 = styled.h3`
 const ItemName = styled.span`
   color: rgb(18, 52, 77);
   text-overflow: ellipsis;
-  font-size: 10px;
+  font-size: 14px;
   font-family: "SF Pro Text", sans-serif;
   font-weight: 600;
   line-height: 20px;

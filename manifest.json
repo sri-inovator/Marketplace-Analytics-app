@@ -19,7 +19,9 @@
     },
     "common": {
       "requests": {
-        "getTicketsDetails" : {}
+        "getTicketsDetails" : {},
+        "getConvData": {},
+        "getConvGroupCount": {}
       }
     }
   },
